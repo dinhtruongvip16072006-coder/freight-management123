@@ -1,0 +1,91 @@
+﻿@* ===== Views/Orders/Index.cshtml ===== *@
+@model IEnumerable<FreightManagement.Models.DonHang>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Danh sách đơn hàng";
+}
+
+<div class="page-header">
+    <div>
+        <h4><i class="bi bi-list-ul me-2"></i>Đơn hàng của tôi</h4>
+        <small>Theo dõi tất cả đơn hàng bạn đã đặt</small>
+    </div>
+    <a href="/Orders/Create" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus me-1"></i>Tạo đơn mới
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div style="background:#fff;border-radius:14px;padding:60px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05)">
+        <div style="font-size:3rem;margin-bottom:16px">📦</div>
+        <h5 style="color:#555">Chưa có đơn hàng nào</h5>
+        <p style="color:#aaa;font-size:.9rem">Hãy tạo đơn hàng đầu tiên của bạn!</p>
+        <a href="/Orders/Create" class="btn btn-primary mt-2">Tạo đơn hàng</a>
+    </div>
+}
+else
+{
+    <div class="data-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Mã đơn</th>
+                    <th>Người nhận</th>
+                    <th>Địa chỉ nhận</th>
+                    <th>Hàng hóa</th>
+                    <th>Chi phí</th>
+                    <th>Trạng thái</th>
+                    <th>Ngày tạo</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr>
+                        <td><strong style="color:#2e7d32">#@d.MaDon.ToString("D5")</strong></td>
+                        <td>
+                            <div style="font-weight:600">@d.TenNguoiNhan</div>
+                            <small style="color:#999">@d.SdtNguoiNhan</small>
+                        </td>
+                        <td><small>@d.DiaChiNhan</small></td>
+                        <td><small>@(d.MoTaHang ?? "—") (@d.SoLuong kiện)</small></td>
+                        <td><strong>@d.ChiPhi.ToString("N0") ₫</strong></td>
+                        <td>
+                            @{
+                                var cls = d.TrangThai switch
+                                {
+                                    "Đang xử lý" => "badge-pending",
+                                    "Đã vào kho" => "badge-warehouse",
+                                    "Đang vận chuyển" => "badge-shipping",
+                                    "Đã giao" => "badge-delivered",
+                                    "Đã hủy" => "badge-cancelled",
+                                    _ => "badge-pending"
+                                };
+                            }
+                            <span class="badge-status @cls">@d.TrangThai</span>
+                        </td>
+                        <td><small style="color:#999">@d.NgayTao.ToString("dd/MM/yyyy HH:mm")</small></td>
+                        <td>
+                            <a href="/Orders/Detail/@d.MaDon" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            @if (d.TrangThai == "Đang xử lý")
+                            {
+                                <a href="/Orders/Cancel/@d.MaDon"
+                                   onclick="return confirm('Bạn có chắc muốn hủy đơn này?')"
+                                   class="btn btn-outline-danger btn-sm ms-1">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@* ===== Views/Orders/Detail.cshtml ===== *@

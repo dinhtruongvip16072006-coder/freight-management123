@@ -1,0 +1,37 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Dashboard Kho hàng";
+}
+<div class="page-header">
+    <div><h4><i class="bi bi-building me-2"></i>Dashboard Quản lý kho</h4><small>Xin chào, @Context.Session.GetString("HoTen")</small></div>
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card" style="background:linear-gradient(135deg,#ff6f00,#ffa000)">
+            <div class="stat-icon">📥</div><div class="stat-val">@ViewBag.ChoNhanVaoKho</div><div class="stat-label">Chờ nhận vào kho</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background:linear-gradient(135deg,#1565c0,#1976d2)">
+            <div class="stat-icon">🏭</div><div class="stat-val">@ViewBag.DangTrongKho</div><div class="stat-label">Đang trong kho</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background:linear-gradient(135deg,#6a1b9a,#8e24aa)">
+            <div class="stat-icon">🚚</div><div class="stat-val">@ViewBag.DangVanChuyen</div><div class="stat-label">Đang vận chuyển</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background:linear-gradient(135deg,#2e7d32,#43a047)">
+            <div class="stat-icon">✅</div><div class="stat-val">@ViewBag.DaGiao</div><div class="stat-label">Đã giao hôm nay</div>
+        </div>
+    </div>
+</div>
+<div class="row g-3">
+    <div class="col-md-4"><a href="/Warehouse/Incoming" class="btn btn-warning w-100 py-3 fw-bold"><i class="bi bi-box-arrow-in-down me-2"></i>Nhận đơn vào kho</a></div>
+    <div class="col-md-4"><a href="/Warehouse/Assign" class="btn btn-primary w-100 py-3 fw-bold"><i class="bi bi-person-badge me-2"></i>Gán tài xế</a></div>
+    <div class="col-md-4"><a href="/Warehouse/Stock" class="btn btn-outline-primary w-100 py-3 fw-bold"><i class="bi bi-archive me-2"></i>Xem hàng trong kho</a></div>
+</div>

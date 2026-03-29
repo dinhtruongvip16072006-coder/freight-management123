@@ -1,0 +1,31 @@
+﻿@model IEnumerable<FreightManagement.Models.DonHang>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Đơn đã hoàn thành";
+}
+<div class="page-header">
+    <div><h4><i class="bi bi-check-circle me-2"></i>Đơn hàng đã hoàn thành</h4><small>Tổng: @Model.Count() đơn đã giao thành công</small></div>
+    <a href="/Driver/Index" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i>Dashboard</a>
+</div>
+<div class="data-table">
+    <table class="table">
+        <thead><tr><th>Mã đơn</th><th>Người nhận</th><th>Địa chỉ nhận</th><th>Hàng hóa</th><th>Chi phí</th><th>Ngày giao</th></tr></thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr><td colspan="6" class="text-center py-4" style="color:#aaa">Chưa có đơn nào hoàn thành</td></tr>
+            }
+            @foreach (var d in Model)
+            {
+                <tr>
+                    <td><strong style="color:#2e7d32">#@d.MaDon.ToString("D5")</strong></td>
+                    <td><div style="font-weight:600">@d.TenNguoiNhan</div><small style="color:#999">@d.SdtNguoiNhan</small></td>
+                    <td><small>@d.DiaChiNhan</small></td>
+                    <td><small>@(d.MoTaHang ?? "—") (@d.SoLuong kiện)</small></td>
+                    <td><strong style="color:#1b5e20">@d.ChiPhi.ToString("N0") ₫</strong></td>
+                    <td><small style="color:#999">@d.NgayCapNhat.ToString("dd/MM/yyyy HH:mm")</small></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

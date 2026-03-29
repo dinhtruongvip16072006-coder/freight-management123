@@ -1,0 +1,38 @@
+﻿@* ===== Views/Admin/Orders.cshtml ===== *@
+@model IEnumerable<FreightManagement.Models.DonHang>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Tất cả đơn hàng";
+}
+<div class="page-header">
+    <div><h4><i class="bi bi-box-seam me-2"></i>Tất cả đơn hàng</h4><small>Tổng: @Model.Count() đơn hàng</small></div>
+</div>
+<div class="data-table">
+    <table class="table">
+        <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Người nhận</th><th>Địa chỉ nhận</th><th>Tài xế</th><th>Chi phí</th><th>Trạng thái</th><th>Ngày tạo</th></tr></thead>
+        <tbody>
+            @foreach (var d in Model)
+            {
+                var cls = d.TrangThai switch
+                {
+                    "Đang xử lý" => "badge-pending",
+                    "Đã vào kho" => "badge-warehouse",
+                    "Đang vận chuyển" => "badge-shipping",
+                    "Đã giao" => "badge-delivered",
+                    "Đã hủy" => "badge-cancelled",
+                    _ => "badge-pending"
+                };
+                <tr>
+                    <td><strong style="color:#2e7d32">#@d.MaDon.ToString("D5")</strong></td>
+                    <td><div style="font-weight:600">@d.KhachHang?.HoTen</div><small style="color:#999">@d.KhachHang?.SoDienThoai</small></td>
+                    <td><div style="font-weight:500">@d.TenNguoiNhan</div><small style="color:#999">@d.SdtNguoiNhan</small></td>
+                    <td><small>@d.DiaChiNhan</small></td>
+                    <td><small>@(d.TaiXe?.HoTen ?? "Chưa gán")</small></td>
+                    <td><strong>@d.ChiPhi.ToString("N0") ₫</strong></td>
+                    <td><span class="badge-status @cls">@d.TrangThai</span></td>
+                    <td><small style="color:#999">@d.NgayTao.ToString("dd/MM/yy HH:mm")</small></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

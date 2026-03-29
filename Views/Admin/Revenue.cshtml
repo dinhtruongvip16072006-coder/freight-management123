@@ -1,0 +1,50 @@
+﻿@* ===== Views/Admin/Revenue.cshtml ===== *@
+@model IEnumerable<FreightManagement.Models.ThongKeDoanhThu>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Thống kê doanh thu";
+    var tongDT = Model.Sum(t => t.ChiPhiVanChuyen);
+}
+<div class="page-header">
+    <div><h4><i class="bi bi-bar-chart-line me-2"></i>Thống kê doanh thu</h4><small>Tổng doanh thu: @tongDT.ToString("N0") ₫</small></div>
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card" style="background:linear-gradient(135deg,#2e7d32,#43a047)">
+            <div class="stat-icon">💰</div>
+            <div class="stat-val" style="font-size:1.4rem">@tongDT.ToString("N0") ₫</div>
+            <div class="stat-label">Tổng doanh thu</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card" style="background:linear-gradient(135deg,#1565c0,#1976d2)">
+            <div class="stat-icon">📦</div>
+            <div class="stat-val">@Model.Count()</div>
+            <div class="stat-label">Tổng đơn đã giao</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card" style="background:linear-gradient(135deg,#ff6f00,#ffa000)">
+            <div class="stat-icon">📅</div>
+            <div class="stat-val" style="font-size:1.4rem">@(Model.Any() ? Model.Max(t => t.Ngay).ToString("dd/MM/yyyy") : "—")</div>
+            <div class="stat-label">Đơn giao gần nhất</div>
+        </div>
+    </div>
+</div>
+<div class="data-table">
+    <table class="table">
+        <thead><tr><th>Mã thống kê</th><th>Ngày</th><th>Mã đơn hàng</th><th>Người nhận</th><th>Chi phí vận chuyển</th></tr></thead>
+        <tbody>
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td><small style="color:#999">#@t.MaThongKe</small></td>
+                    <td><strong>@t.Ngay.ToString("dd/MM/yyyy")</strong></td>
+                    <td><strong style="color:#2e7d32">#@t.MaDon.ToString("D5")</strong></td>
+                    <td>@t.DonHang?.TenNguoiNhan</td>
+                    <td><strong style="color:#1b5e20">@t.ChiPhiVanChuyen.ToString("N0") ₫</strong></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

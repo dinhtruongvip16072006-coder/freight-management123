@@ -1,0 +1,42 @@
+﻿@* ===== Views/Driver/MyOrders.cshtml ===== *@
+@model IEnumerable<FreightManagement.Models.DonHang>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Đơn được giao";
+}
+<div class="page-header">
+    <div><h4><i class="bi bi-list-check me-2"></i>Đơn hàng được giao</h4><small>Xác nhận nhận hàng từ kho để bắt đầu vận chuyển</small></div>
+</div>
+<div class="data-table">
+    <table class="table">
+        <thead><tr><th>Mã đơn</th><th>Người nhận</th><th>Địa chỉ nhận</th><th>Hàng hóa</th><th>Chi phí</th><th>Ngày gán</th><th>Thao tác</th></tr></thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr><td colspan="7" class="text-center py-4" style="color:#aaa">Không có đơn nào được giao</td></tr>
+            }
+            @foreach (var d in Model)
+            {
+                <tr>
+                    <td><strong style="color:#2e7d32">#@d.MaDon.ToString("D5")</strong></td>
+                    <td><div style="font-weight:600">@d.TenNguoiNhan</div><small style="color:#999">@d.SdtNguoiNhan</small></td>
+                    <td><small>@d.DiaChiNhan</small></td>
+                    <td><small>@(d.MoTaHang ?? "—") (@d.SoLuong kiện)</small></td>
+                    <td><strong>@d.ChiPhi.ToString("N0") ₫</strong></td>
+                    <td><small style="color:#999">@d.NgayCapNhat.ToString("dd/MM HH:mm")</small></td>
+                    <td>
+                        <form method="post" action="/Driver/ChapNhan">
+                            <input type="hidden" name="maDon" value="@d.MaDon" />
+                            <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Xác nhận nhận đơn và bắt đầu vận chuyển?')">
+                                <i class="bi bi-truck me-1"></i>Bắt đầu giao
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@* ===== Views/Driver/Delivering.cshtml ===== *@

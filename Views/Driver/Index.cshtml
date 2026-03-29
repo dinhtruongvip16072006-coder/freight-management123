@@ -1,0 +1,32 @@
+﻿@* ===== Views/Driver/Index.cshtml ===== *@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Dashboard Tài xế";
+}
+<div class="page-header">
+    <div><h4><i class="bi bi-truck me-2"></i>Dashboard Tài xế</h4><small>Xin chào, @Context.Session.GetString("HoTen")</small></div>
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card" style="background:linear-gradient(135deg,#ff6f00,#ffa000)">
+            <div class="stat-icon">📋</div><div class="stat-val">@ViewBag.ChoXuLy</div><div class="stat-label">Đơn chờ xác nhận</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card" style="background:linear-gradient(135deg,#6a1b9a,#8e24aa)">
+            <div class="stat-icon">🚚</div><div class="stat-val">@ViewBag.DangGiao</div><div class="stat-label">Đang giao hàng</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card" style="background:linear-gradient(135deg,#2e7d32,#43a047)">
+            <div class="stat-icon">✅</div><div class="stat-val">@ViewBag.HoanThanh</div><div class="stat-label">Đã hoàn thành</div>
+        </div>
+    </div>
+</div>
+<div class="row g-3">
+    <div class="col-md-6"><a href="/Driver/MyOrders" class="btn btn-warning w-100 py-3 fw-bold"><i class="bi bi-list-check me-2"></i>Đơn được giao — Xác nhận nhận hàng</a></div>
+    <div class="col-md-6"><a href="/Driver/Delivering" class="btn btn-primary w-100 py-3 fw-bold"><i class="bi bi-truck me-2"></i>Đang giao — Xác nhận giao thành công</a></div>
+</div>
+
+
+@* ===== Views/Driver/MyOrders.cshtml ===== *@

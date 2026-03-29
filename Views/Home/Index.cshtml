@@ -1,0 +1,558 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VanChuyenPBL3 - Hệ thống quản lý vận chuyển hàng hóa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #2e7d32;
+            --green-light: #4caf50;
+            --green-pale: #e8f5e9;
+            --orange: #ff6f00;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+            background: rgba(27,94,32,.97);
+            backdrop-filter: blur(10px);
+            padding: 14px 0;
+            transition: all .3s;
+        }
+
+            nav .brand {
+                color: #fff;
+                font-size: 1.4rem;
+                font-weight: 800;
+                text-decoration: none;
+            }
+
+                nav .brand span {
+                    color: #a5d6a7;
+                }
+
+            nav .nav-links a {
+                color: #c8e6c9;
+                text-decoration: none;
+                margin-left: 28px;
+                font-size: .9rem;
+                font-weight: 500;
+                transition: color .2s;
+            }
+
+                nav .nav-links a:hover {
+                    color: #fff;
+                }
+
+        .btn-login {
+            background: var(--orange);
+            color: #fff;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: .9rem;
+            transition: all .2s;
+        }
+
+            .btn-login:hover {
+                background: #e65100;
+                color: #fff;
+                transform: translateY(-1px);
+            }
+
+        .btn-register {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255,255,255,.4);
+            padding: 7px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: .9rem;
+            margin-left: 10px;
+            transition: all .2s;
+        }
+
+            .btn-register:hover {
+                background: rgba(255,255,255,.15);
+                color: #fff;
+            }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #1a472a 100%);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .hero::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+
+        .hero-text h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+            .hero-text h1 span {
+                color: #a5d6a7;
+            }
+
+        .hero-text p {
+            color: #c8e6c9;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+            .hero-btns .btn-main {
+                background: var(--orange);
+                color: #fff;
+                border: none;
+                padding: 14px 32px;
+                border-radius: 30px;
+                font-size: 1rem;
+                font-weight: 700;
+                text-decoration: none;
+                transition: all .25s;
+                box-shadow: 0 6px 20px rgba(255,111,0,.4);
+            }
+
+                .hero-btns .btn-main:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 10px 28px rgba(255,111,0,.5);
+                    color: #fff;
+                }
+
+            .hero-btns .btn-sec {
+                background: rgba(255,255,255,.12);
+                color: #fff;
+                border: 2px solid rgba(255,255,255,.3);
+                padding: 12px 28px;
+                border-radius: 30px;
+                font-size: 1rem;
+                font-weight: 600;
+                text-decoration: none;
+                transition: all .25s;
+                backdrop-filter: blur(5px);
+            }
+
+                .hero-btns .btn-sec:hover {
+                    background: rgba(255,255,255,.22);
+                    color: #fff;
+                }
+
+        /* Floating cards */
+        .hero-visual {
+            position: relative;
+        }
+
+        .float-card {
+            background: rgba(255,255,255,.12);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 16px;
+            padding: 16px 20px;
+            color: #fff;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            animation: floatUp 3s ease-in-out infinite;
+        }
+
+            .float-card:nth-child(2) {
+                animation-delay: 1s;
+                margin-left: 30px;
+            }
+
+            .float-card:nth-child(3) {
+                animation-delay: 2s;
+                margin-left: 15px;
+            }
+
+            .float-card .icon {
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.3rem;
+            }
+        keyframes floatUp {
+            0%,100%
+
+        {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-8px);
+        }
+
+        }
+
+        /* STATS */
+        .stats-bar {
+            background: #fff;
+            padding: 24px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,.08);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+            .stat-item .num {
+                font-size: 2rem;
+                font-weight: 800;
+                color: var(--green);
+            }
+
+            .stat-item .lbl {
+                font-size: .85rem;
+                color: #777;
+                margin-top: 2px;
+            }
+
+        /* FEATURES */
+        .features {
+            padding: 80px 0;
+            background: #f9fdf9;
+        }
+
+        .feature-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 28px 24px;
+            border: 1px solid #e8f5e9;
+            text-align: center;
+            height: 100%;
+            transition: all .25s;
+            box-shadow: 0 2px 8px rgba(0,0,0,.04);
+        }
+
+            .feature-card:hover {
+                transform: translateY(-6px);
+                border-color: var(--green-light);
+                box-shadow: 0 12px 30px rgba(46,125,50,.12);
+            }
+
+            .feature-card .icon {
+                width: 64px;
+                height: 64px;
+                border-radius: 16px;
+                background: var(--green-pale);
+                color: var(--green);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.8rem;
+                margin: 0 auto 18px;
+            }
+
+            .feature-card h5 {
+                color: #222;
+                font-weight: 700;
+                margin-bottom: 10px;
+            }
+
+            .feature-card p {
+                color: #777;
+                font-size: .88rem;
+                line-height: 1.6;
+            }
+
+        /* HOW IT WORKS */
+        .how-it-works {
+            padding: 80px 0;
+        }
+
+        .step-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .step-num {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--green);
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-box h6 {
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #222;
+        }
+
+        .step-box p {
+            font-size: .88rem;
+            color: #777;
+            margin: 0;
+        }
+
+        /* CTA */
+        .cta-section {
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+            padding: 70px 0;
+            text-align: center;
+            color: #fff;
+        }
+
+            .cta-section h2 {
+                font-size: 2.2rem;
+                font-weight: 800;
+                margin-bottom: 14px;
+            }
+
+            .cta-section p {
+                color: #c8e6c9;
+                font-size: 1.05rem;
+                margin-bottom: 30px;
+            }
+
+        /* FOOTER */
+        footer {
+            background: #111;
+            color: #888;
+            padding: 30px 0;
+            text-align: center;
+            font-size: .85rem;
+        }
+
+            footer a {
+                color: #a5d6a7;
+                text-decoration: none;
+            }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="container d-flex align-items-center">
+            <a class="brand" href="/Home/Index"><i class="bi bi-truck me-2"></i>Vận<span>Chuyển</span>PBL3</a>
+            <div class="nav-links ms-auto d-flex align-items-center">
+                <a href="#features">Dịch vụ</a>
+                <a href="#how">Cách hoạt động</a>
+                <a href="#cta">Liên hệ</a>
+                <a href="/Account/Login" class="btn-login ms-4">Đăng nhập</a>
+                <a href="/Account/Register" class="btn-register">Đăng ký</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-text" style="padding-top:80px">
+                    <div style="display:inline-block;background:rgba(255,255,255,.12);border-radius:20px;padding:6px 16px;font-size:.82rem;color:#a5d6a7;margin-bottom:20px;border:1px solid rgba(255,255,255,.2)">
+                        🚀 Nền tảng vận chuyển thông minh
+                    </div>
+                    <h1>Quản lý vận chuyển <span>hàng hóa</span> toàn quốc</h1>
+                    <p>Giải pháp logistics toàn diện — theo dõi đơn hàng real-time, quản lý kho hàng thông minh, kết nối tài xế tức thì trên toàn quốc.</p>
+                    <div class="hero-btns">
+                        <a href="/Account/Register" class="btn-main"><i class="bi bi-rocket me-2"></i>Bắt đầu miễn phí</a>
+                        <a href="/Account/Login" class="btn-sec"><i class="bi bi-box-arrow-in-right me-2"></i>Đăng nhập</a>
+                    </div>
+                </div>
+                <div class="col-lg-5 offset-lg-1 hero-visual mt-5 mt-lg-0" style="padding-top:80px">
+                    <div class="float-card">
+                        <div class="icon" style="background:rgba(255,111,0,.2)">📦</div>
+                        <div>
+                            <div style="font-weight:700;font-size:.95rem">Đơn hàng #DH00123</div>
+                            <div style="font-size:.8rem;color:#a5d6a7">Đang vận chuyển → Đà Nẵng</div>
+                        </div>
+                        <div style="margin-left:auto;background:rgba(76,175,80,.3);padding:3px 10px;border-radius:12px;font-size:.78rem">Live</div>
+                    </div>
+                    <div class="float-card">
+                        <div class="icon" style="background:rgba(33,150,243,.2)">🏭</div>
+                        <div>
+                            <div style="font-weight:700;font-size:.95rem">Kho Hà Nội</div>
+                            <div style="font-size:.8rem;color:#a5d6a7">342 / 500 kiện hàng</div>
+                        </div>
+                        <div style="margin-left:auto">
+                            <div style="background:#e8f5e9;border-radius:8px;height:6px;width:60px">
+                                <div style="background:#4caf50;height:6px;border-radius:8px;width:68%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="float-card">
+                        <div class="icon" style="background:rgba(156,39,176,.2)">✅</div>
+                        <div>
+                            <div style="font-weight:700;font-size:.95rem">Giao thành công!</div>
+                            <div style="font-size:.8rem;color:#a5d6a7">Nguyễn Thị A — TP.HCM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <div class="stats-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-3 stat-item"><div class="num">10K+</div><div class="lbl">Đơn hàng/ngày</div></div>
+                <div class="col-3 stat-item"><div class="num">34</div><div class="lbl">Tỉnh thành phủ sóng</div></div>
+                <div class="col-3 stat-item"><div class="num">98%</div><div class="lbl">Giao hàng đúng hạn</div></div>
+                <div class="col-3 stat-item"><div class="num">500+</div><div class="lbl">Tài xế đối tác</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="text-center mb-50">
+                <h2 style="font-weight:800;color:#1b5e20;font-size:2rem">Tính năng nổi bật</h2>
+                <p style="color:#777;margin-top:10px">Mọi thứ bạn cần để quản lý vận chuyển chuyên nghiệp</p>
+            </div>
+            <div class="row g-4 mt-2">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="icon"><i class="bi bi-geo-alt"></i></div>
+                        <h5>Theo dõi real-time</h5>
+                        <p>Cập nhật trạng thái đơn hàng tức thì, lịch sử vận chuyển chi tiết từng bước.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="icon"><i class="bi bi-building"></i></div>
+                        <h5>Quản lý kho hàng</h5>
+                        <p>Kiểm soát hàng tồn kho, nhập xuất tự động, cảnh báo sức chứa thông minh.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="icon"><i class="bi bi-truck"></i></div>
+                        <h5>Kết nối tài xế</h5>
+                        <p>Gán tài xế tối ưu, theo dõi hành trình, xác nhận giao hàng chính xác.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="icon"><i class="bi bi-bar-chart"></i></div>
+                        <h5>Báo cáo & thống kê</h5>
+                        <p>Dashboard trực quan, báo cáo doanh thu theo ngày/tháng/năm chi tiết.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="icon"><i class="bi bi-shield-check"></i></div>
+                        <h5>Phân quyền rõ ràng</h5>
+                        <p>4 vai trò: Admin, Khách hàng, Quản lý kho, Tài xế — mỗi role có giao diện riêng.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="icon"><i class="bi bi-phone"></i></div>
+                        <h5>Giao diện thân thiện</h5>
+                        <p>Thiết kế hiện đại, responsive, dễ sử dụng trên mọi thiết bị.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works" id="how">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-4">
+                    <h2 style="font-weight:800;color:#1b5e20;font-size:2rem;margin-bottom:12px">Quy trình vận chuyển</h2>
+                    <p style="color:#777;line-height:1.7">Hệ thống xử lý đơn hàng tự động, minh bạch từ lúc đặt đến lúc giao tay người nhận.</p>
+                </div>
+                <div class="col-lg-7">
+                    <div class="step-box">
+                        <div class="step-num">1</div>
+                        <div><h6>Khách hàng tạo đơn hàng</h6><p>Điền thông tin người gửi, người nhận, loại hàng hóa và xác nhận đặt đơn.</p></div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-num">2</div>
+                        <div><h6>Quản lý kho tiếp nhận</h6><p>Kiểm tra đơn, nhập hàng vào kho, cập nhật trạng thái và gán tài xế phù hợp.</p></div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-num">3</div>
+                        <div><h6>Tài xế vận chuyển</h6><p>Nhận lệnh giao hàng, xuất kho và cập nhật trạng thái giao hàng real-time.</p></div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-num">4</div>
+                        <div><h6>Xác nhận giao thành công</h6><p>Hàng đến tay người nhận, hệ thống tự động ghi nhận doanh thu và cập nhật báo cáo.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" id="cta">
+        <div class="container">
+            <h2>Bắt đầu ngay hôm nay</h2>
+            <p>Đăng ký miễn phí và trải nghiệm hệ thống quản lý vận chuyển chuyên nghiệp</p>
+            <a href="/Account/Register" style="background:#fff;color:#2e7d32;border:none;padding:14px 36px;border-radius:30px;font-size:1rem;font-weight:700;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.2);transition:all .25s;display:inline-block">
+                <i class="bi bi-person-plus me-2"></i>Đăng ký miễn phí
+            </a>
+            <a href="/Account/Login" style="background:transparent;color:#fff;border:2px solid rgba(255,255,255,.4);padding:12px 30px;border-radius:30px;font-size:1rem;font-weight:600;text-decoration:none;margin-left:14px;display:inline-block">
+                Đăng nhập
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>© 2026 VanChuyenPBL3 — Hệ thống quản lý vận chuyển hàng hóa</p>
+            <p style="margin-top:6px">Võ Văn Đạt · Nguyễn Đình Trường · Nenhouangmala Xaychaluen</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

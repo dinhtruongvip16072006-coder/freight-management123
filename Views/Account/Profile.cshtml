@@ -1,0 +1,140 @@
+﻿@model FreightManagement.Models.User
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Thông tin cá nhân";
+    var role = Context.Session.GetString("RoleName");
+}
+
+<div class="page-header">
+    <div>
+        <h4><i class="bi bi-person-circle me-2"></i>Thông tin cá nhân</h4>
+        <small>Xem và cập nhật thông tin tài khoản của bạn</small>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- CARD AVATAR BÊN TRÁI -->
+    <div class="col-md-4">
+        <div class="form-card text-center">
+            <div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#2e7d32,#4caf50);display:flex;align-items:center;justify-content:center;font-size:2.2rem;color:#fff;font-weight:700;margin:0 auto 16px;box-shadow:0 6px 20px rgba(46,125,50,.3)">
+                @Model.HoTen.Substring(0, 1).ToUpper()
+            </div>
+            <h5 style="font-weight:700;color:#1b5e20;margin-bottom:6px">@Model.HoTen</h5>
+            <span style="background:#e8f5e9;color:#2e7d32;padding:4px 14px;border-radius:20px;font-size:.82rem;font-weight:600">
+                @(role switch {
+                    "KhachHang"  => "👤 Khách hàng",
+                    "QuanLyKho"  => "🏭 Quản lý kho",
+                    "TaiXe"      => "🚚 Tài xế",
+                    _            => role
+                })
+            </span>
+            <div style="margin-top:14px;font-size:.83rem;color:#aaa">
+                <i class="bi bi-calendar me-1"></i>Tham gia: @Model.NgayTao.ToString("dd/MM/yyyy")
+            </div>
+            <div style="margin-top:6px;font-size:.83rem;color:#aaa">
+                <i class="bi bi-envelope me-1"></i>@Model.Email
+            </div>
+            <hr style="border-color:#e8f5e9;margin:16px 0" />
+            <a href="/Account/ChangePassword" class="btn btn-outline-primary w-100 mb-2">
+                <i class="bi bi-key me-2"></i>Đổi mật khẩu
+            </a>
+            <div style="background:@(Model.TrangThai=="HoatDong"?"#e8f5e9":"#fce4ec");color:@(Model.TrangThai=="HoatDong"?"#2e7d32":"#c62828");padding:8px;border-radius:10px;font-size:.82rem;font-weight:600;margin-top:4px">
+                ● @(Model.TrangThai == "HoatDong" ? "Tài khoản đang hoạt động" : "Tài khoản bị khóa")
+            </div>
+        </div>
+    </div>
+
+    <!-- FORM CHỈNH SỬA BÊN PHẢI -->
+    <div class="col-md-8">
+        <div class="form-card">
+            <div class="section-title"><i class="bi bi-pencil-square me-2"></i>Cập nhật thông tin</div>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger mb-3">
+                    <i class="bi bi-exclamation-circle me-2"></i>@ViewBag.Error
+                </div>
+            }
+
+            <form method="post" action="/Account/UpdateProfile">
+                <div class="row g-3">
+                    <!-- Họ tên -->
+                    <div class="col-md-6">
+                        <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                        <input type="text" name="hoTen" class="form-control"
+                               value="@Model.HoTen" required />
+                    </div>
+
+                    <!-- Email (readonly) -->
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control"
+                               value="@Model.Email" readonly
+                               style="background:#f5f5f5;cursor:not-allowed" />
+                        <small style="color:#aaa;font-size:.75rem">Email không thể thay đổi</small>
+                    </div>
+
+                    <!-- Số điện thoại -->
+                    <div class="col-md-6">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="text" name="soDienThoai" class="form-control"
+                               value="@Model.SoDienThoai" placeholder="0912345678" />
+                    </div>
+
+                    <!-- Địa chỉ (tỉnh thành) -->
+                    <div class="col-md-6">
+                        <label class="form-label">Tỉnh/Thành phố</label>
+                        <select name="diaChi" class="form-select">
+                            <option value="">-- Chọn tỉnh thành --</option>
+                            @{
+                                var provinces = new[] {
+                                    "An Giang","Bà Rịa - Vũng Tàu","Bắc Giang","Bắc Kạn","Bạc Liêu",
+                                    "Bắc Ninh","Bến Tre","Bình Định","Bình Dương","Bình Phước",
+                                    "Bình Thuận","Cà Mau","Cần Thơ","Cao Bằng","Đà Nẵng","Đắk Lắk",
+                                    "Đắk Nông","Điện Biên","Đồng Nai","Đồng Tháp","Gia Lai","Hà Giang",
+                                    "Hà Nam","Hà Nội","Hà Tĩnh","Hải Dương","Hải Phòng","Hậu Giang",
+                                    "Hòa Bình","Hưng Yên","Khánh Hòa","Kiên Giang","Kon Tum","Lai Châu",
+                                    "Lâm Đồng","Lạng Sơn","Lào Cai","Long An","Nam Định","Nghệ An",
+                                    "Ninh Bình","Ninh Thuận","Phú Thọ","Phú Yên","Quảng Bình","Quảng Nam",
+                                    "Quảng Ngãi","Quảng Ninh","Quảng Trị","Sóc Trăng","Sơn La","Tây Ninh",
+                                    "Thái Bình","Thái Nguyên","Thanh Hóa","Thừa Thiên Huế","Tiền Giang",
+                                    "TP. Hồ Chí Minh","Trà Vinh","Tuyên Quang","Vĩnh Long","Vĩnh Phúc","Yên Bái"
+                                };
+                                foreach (var p in provinces)
+                                {
+                                    <option value="@p" selected="@(Model.DiaChi == p ? "selected" : null)">@p</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    @* CCCD chỉ hiện cho TaiXe *@
+                    @if (role == "TaiXe")
+                    {
+                        <div class="col-md-6">
+                            <label class="form-label">Số CCCD</label>
+                            <input type="text" name="cccd" class="form-control"
+                                   value="@Model.CCCD" placeholder="012345678901" />
+                        </div>
+                    }
+                </div>
+
+                <hr style="border-color:#e8f5e9;margin:20px 0" />
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="@(role switch {
+                        "KhachHang" => "/Orders/Index",
+                        "QuanLyKho" => "/Warehouse/Index",
+                        "TaiXe"     => "/Driver/Index",
+                        _           => "/"
+                    })" class="btn btn-outline-secondary">
+                        Hủy
+                    </a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-check-circle me-2"></i>Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

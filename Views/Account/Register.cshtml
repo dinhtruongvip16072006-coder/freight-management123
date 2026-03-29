@@ -1,0 +1,271 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+    ViewData["Title"] = "Đăng ký";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng ký - VanChuyenPBL3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 30px 16px;
+            background: linear-gradient(135deg, #0a1628 0%, #1b2e1b 50%, #0d2010 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255,255,255,.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 20px;
+            padding: 36px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.4);
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+            .brand .logo {
+                width: 56px;
+                height: 56px;
+                border-radius: 14px;
+                background: linear-gradient(135deg, #2e7d32, #4caf50);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.6rem;
+                margin: 0 auto 10px;
+            }
+
+            .brand h4 {
+                color: #fff;
+                font-weight: 800;
+                font-size: 1.3rem;
+                margin: 0;
+            }
+
+            .brand p {
+                color: #81c784;
+                font-size: .83rem;
+                margin-top: 4px;
+            }
+
+        .form-label {
+            color: #c8e6c9;
+            font-size: .83rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.15);
+            color: #fff;
+            border-radius: 10px;
+            padding: 11px 14px;
+            font-size: .9rem;
+        }
+
+            .form-control:focus {
+                background: rgba(255,255,255,.1);
+                border-color: #4caf50;
+                box-shadow: 0 0 0 3px rgba(76,175,80,.2);
+                color: #fff;
+            }
+
+            .form-control::placeholder {
+                color: rgba(255,255,255,.3);
+            }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            border: none;
+            color: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-top: 6px;
+            box-shadow: 0 6px 20px rgba(46,125,50,.4);
+            transition: all .25s;
+            cursor: pointer;
+        }
+
+            .btn-submit:hover {
+                transform: translateY(-2px);
+            }
+
+        .link-btn {
+            display: block;
+            text-align: center;
+            color: #81c784;
+            text-decoration: none;
+            font-size: .88rem;
+            margin-top: 16px;
+        }
+
+            .link-btn:hover {
+                color: #a5d6a7;
+            }
+
+        .alert-danger {
+            background: rgba(244,67,54,.15);
+            border-color: rgba(244,67,54,.3);
+            color: #ef9a9a;
+            border-radius: 10px;
+            font-size: .88rem;
+        }
+
+        .home-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: rgba(255,255,255,.5);
+            text-decoration: none;
+            font-size: .88rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color .2s;
+        }
+
+            .home-link:hover {
+                color: #81c784;
+            }
+    </style>
+</head>
+<body>
+    <a href="/Home/Index" class="home-link"><i class="bi bi-arrow-left"></i> Trang chủ</a>
+    <div class="auth-card">
+        <div class="brand">
+            <div class="logo">🚚</div>
+            <h4>Đăng ký tài khoản</h4>
+            <p>Tham gia VanChuyenPro ngay hôm nay</p>
+        </div>
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger mb-3"><i class="bi bi-exclamation-circle me-2"></i>@ViewBag.Error</div>
+        }
+        <form method="post" action="/Account/Register">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label">Họ và tên</label>
+                    <input type="text" name="hoTen" class="form-control" placeholder="Nguyễn Văn A" required />
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="email@example.com" required />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Số điện thoại</label>
+                    <input type="text" name="soDienThoai" class="form-control" placeholder="0912345678" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Tỉnh/Thành phố</label>
+                    <select name="diaChi" class="form-control form-select" style="background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(255,255,255,.15)">
+                        <option value="" style="background:#1a2a1a">-- Chọn tỉnh thành --</option>
+                        <option style="background:#1a2a1a">An Giang</option>
+                        <option style="background:#1a2a1a">Bà Rịa - Vũng Tàu</option>
+                        <option style="background:#1a2a1a">Bắc Giang</option>
+                        <option style="background:#1a2a1a">Bắc Kạn</option>
+                        <option style="background:#1a2a1a">Bạc Liêu</option>
+                        <option style="background:#1a2a1a">Bắc Ninh</option>
+                        <option style="background:#1a2a1a">Bến Tre</option>
+                        <option style="background:#1a2a1a">Bình Định</option>
+                        <option style="background:#1a2a1a">Bình Dương</option>
+                        <option style="background:#1a2a1a">Bình Phước</option>
+                        <option style="background:#1a2a1a">Bình Thuận</option>
+                        <option style="background:#1a2a1a">Cà Mau</option>
+                        <option style="background:#1a2a1a">Cần Thơ</option>
+                        <option style="background:#1a2a1a">Cao Bằng</option>
+                        <option style="background:#1a2a1a">Đà Nẵng</option>
+                        <option style="background:#1a2a1a">Đắk Lắk</option>
+                        <option style="background:#1a2a1a">Đắk Nông</option>
+                        <option style="background:#1a2a1a">Điện Biên</option>
+                        <option style="background:#1a2a1a">Đồng Nai</option>
+                        <option style="background:#1a2a1a">Đồng Tháp</option>
+                        <option style="background:#1a2a1a">Gia Lai</option>
+                        <option style="background:#1a2a1a">Hà Giang</option>
+                        <option style="background:#1a2a1a">Hà Nam</option>
+                        <option style="background:#1a2a1a">Hà Nội</option>
+                        <option style="background:#1a2a1a">Hà Tĩnh</option>
+                        <option style="background:#1a2a1a">Hải Dương</option>
+                        <option style="background:#1a2a1a">Hải Phòng</option>
+                        <option style="background:#1a2a1a">Hậu Giang</option>
+                        <option style="background:#1a2a1a">Hòa Bình</option>
+                        <option style="background:#1a2a1a">Hưng Yên</option>
+                        <option style="background:#1a2a1a">Khánh Hòa</option>
+                        <option style="background:#1a2a1a">Kiên Giang</option>
+                        <option style="background:#1a2a1a">Kon Tum</option>
+                        <option style="background:#1a2a1a">Lai Châu</option>
+                        <option style="background:#1a2a1a">Lâm Đồng</option>
+                        <option style="background:#1a2a1a">Lạng Sơn</option>
+                        <option style="background:#1a2a1a">Lào Cai</option>
+                        <option style="background:#1a2a1a">Long An</option>
+                        <option style="background:#1a2a1a">Nam Định</option>
+                        <option style="background:#1a2a1a">Nghệ An</option>
+                        <option style="background:#1a2a1a">Ninh Bình</option>
+                        <option style="background:#1a2a1a">Ninh Thuận</option>
+                        <option style="background:#1a2a1a">Phú Thọ</option>
+                        <option style="background:#1a2a1a">Phú Yên</option>
+                        <option style="background:#1a2a1a">Quảng Bình</option>
+                        <option style="background:#1a2a1a">Quảng Nam</option>
+                        <option style="background:#1a2a1a">Quảng Ngãi</option>
+                        <option style="background:#1a2a1a">Quảng Ninh</option>
+                        <option style="background:#1a2a1a">Quảng Trị</option>
+                        <option style="background:#1a2a1a">Sóc Trăng</option>
+                        <option style="background:#1a2a1a">Sơn La</option>
+                        <option style="background:#1a2a1a">Tây Ninh</option>
+                        <option style="background:#1a2a1a">Thái Bình</option>
+                        <option style="background:#1a2a1a">Thái Nguyên</option>
+                        <option style="background:#1a2a1a">Thanh Hóa</option>
+                        <option style="background:#1a2a1a">Thừa Thiên Huế</option>
+                        <option style="background:#1a2a1a">Tiền Giang</option>
+                        <option style="background:#1a2a1a">TP. Hồ Chí Minh</option>
+                        <option style="background:#1a2a1a">Trà Vinh</option>
+                        <option style="background:#1a2a1a">Tuyên Quang</option>
+                        <option style="background:#1a2a1a">Vĩnh Long</option>
+                        <option style="background:#1a2a1a">Vĩnh Phúc</option>
+                        <option style="background:#1a2a1a">Yên Bái</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Mật khẩu</label>
+                    <input type="password" name="password" class="form-control" placeholder="••••••••" required />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Xác nhận mật khẩu</label>
+                    <input type="password" name="confirmPassword" class="form-control" placeholder="••••••••" required />
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn-submit"><i class="bi bi-person-plus me-2"></i>Đăng ký</button>
+                </div>
+            </div>
+        </form>
+        <a href="/Account/Login" class="link-btn">Đã có tài khoản? <strong>Đăng nhập ngay</strong></a>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

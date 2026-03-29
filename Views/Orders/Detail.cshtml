@@ -1,0 +1,137 @@
+﻿@model FreightManagement.Models.DonHang
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Chi tiết đơn hàng";
+}
+
+<div class="page-header">
+    <div>
+        <h4><i class="bi bi-box-seam me-2"></i>Đơn hàng #@Model.MaDon.ToString("D5")</h4>
+        <small>Ngày tạo: @Model.NgayTao.ToString("dd/MM/yyyy HH:mm")</small>
+    </div>
+    <a href="/Orders/Index" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i>Quay lại</a>
+</div>
+
+<div class="row g-4">
+    <!-- TRẠNG THÁI TIẾN TRÌNH -->
+    <div class="col-12">
+        <div class="form-card">
+            <div class="section-title"><i class="bi bi-geo-alt me-2"></i>Tiến trình đơn hàng</div>
+            @{
+                var steps = new[] { "Đang xử lý", "Đã vào kho", "Đang vận chuyển", "Đã giao" };
+                var curIdx = Array.IndexOf(steps, Model.TrangThai);
+                if (Model.TrangThai == "Đã hủy") curIdx = -1;
+            }
+            @if (Model.TrangThai == "Đã hủy")
+            {
+                <div class="alert alert-danger"><i class="bi bi-x-circle me-2"></i>Đơn hàng đã bị hủy</div>
+            }
+            else
+            {
+                <div class="d-flex justify-content-between align-items-center" style="position:relative">
+                    <div style="position:absolute;top:20px;left:10%;right:10%;height:3px;background:#e8f5e9;z-index:0">
+                        <div style="height:100%;background:#4caf50;width:@(curIdx switch { 0 => "0%", 1 => "33%", 2 => "66%", 3 => "100%", _ => "0%" });transition:width .5s"></div>
+                    </div>
+                    @for (int i = 0; i < steps.Length; i++)
+                    {
+                        var icons = new[] { "bi-clock", "bi-building", "bi-truck", "bi-check-circle" };
+                        var done = i <= curIdx;
+                        <div style="text-align:center;z-index:1;flex:1">
+                            <div style="width:40px;height:40px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;border:3px solid @(done ? "#4caf50" : "#ddd");background:@(done ? "#4caf50" : "#fff");color:@(done ? "#fff" : "#bbb")">
+                                <i class="bi @icons[i]"></i>
+                            </div>
+                            <div style="font-size:.78rem;font-weight:@(done ? "700" : "400");color:@(done ? "#2e7d32" : "#aaa")">@steps[i]</div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- THÔNG TIN ĐƠN HÀNG -->
+    <div class="col-md-6">
+        <div class="form-card h-100">
+            <div class="section-title"><i class="bi bi-circle-fill me-2" style="color:#ff6f00;font-size:.6rem"></i>Người gửi</div>
+            <div class="mb-2"><small style="color:#999">Địa chỉ gửi</small><div style="font-weight:600">@Model.DiaChiGui</div></div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-card h-100">
+            <div class="section-title"><i class="bi bi-circle-fill me-2" style="color:#2e7d32;font-size:.6rem"></i>Người nhận</div>
+            <div class="mb-2"><small style="color:#999">Họ tên</small><div style="font-weight:600">@Model.TenNguoiNhan</div></div>
+            <div class="mb-2"><small style="color:#999">Số điện thoại</small><div style="font-weight:600">@Model.SdtNguoiNhan</div></div>
+            <div><small style="color:#999">Địa chỉ nhận</small><div style="font-weight:600">@Model.DiaChiNhan</div></div>
+        </div>
+    </div>
+
+    <!-- CHI TIẾT HÀNG + LỊCH SỬ -->
+    <div class="col-md-5">
+        <div class="form-card h-100">
+            <div class="section-title"><i class="bi bi-box me-2"></i>Chi tiết hàng hóa</div>
+            <div class="mb-2"><small style="color:#999">Mô tả</small><div>@(Model.MoTaHang ?? "Không có mô tả")</div></div>
+            <div class="mb-2"><small style="color:#999">Số lượng</small><div style="font-weight:600">@Model.SoLuong kiện</div></div>
+            <div class="mb-2"><small style="color:#999">Đơn giá</small><div>@Model.DonGia.ToString("N0") ₫/kiện</div></div>
+            <div style="background:#e8f5e9;border-radius:10px;padding:14px;margin-top:12px">
+                <div style="font-size:.82rem;color:#555">Tổng chi phí vận chuyển</div>
+                <div style="font-size:1.6rem;font-weight:800;color:#1b5e20">@Model.ChiPhi.ToString("N0") ₫</div>
+            </div>
+            @if (Model.TaiXe != null)
+            {
+                <div style="margin-top:12px;padding:12px;background:#f1f8e9;border-radius:10px">
+                    <small style="color:#999">Tài xế phụ trách</small>
+                    <div style="font-weight:600">🚚 @Model.TaiXe.HoTen</div>
+                    <div style="font-size:.82rem;color:#777">@Model.TaiXe.SoDienThoai</div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="form-card h-100">
+            <div class="section-title"><i class="bi bi-clock-history me-2"></i>Lịch sử vận chuyển</div>
+            @if (Model.LichSuTrangThais != null && Model.LichSuTrangThais.Any())
+            {
+                <ul class="timeline">
+                    @foreach (var ls in Model.LichSuTrangThais.OrderByDescending(l => l.ThoiGian))
+                    {
+                        var icon = ls.TrangThai switch
+                        {
+                            "Đang xử lý" => "bi-clock",
+                            "Đã vào kho" => "bi-building",
+                            "Đang vận chuyển" => "bi-truck",
+                            "Đã giao" => "bi-check-circle",
+                            "Đã hủy" => "bi-x-circle",
+                            _ => "bi-circle"
+                        };
+                        <li class="timeline-item">
+                            <div class="timeline-dot active"><i class="bi @icon"></i></div>
+                            <div class="timeline-body">
+                                <strong>@ls.TrangThai</strong>
+                                <small>@ls.ThoiGian.ToString("dd/MM/yyyy HH:mm")</small>
+                                @if (!string.IsNullOrEmpty(ls.GhiChu))
+                                {
+                                    <small style="color:#666">@ls.GhiChu</small>
+                                }
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p style="color:#aaa;font-size:.9rem">Chưa có lịch sử cập nhật.</p>
+            }
+        </div>
+    </div>
+
+    @if (Model.TrangThai == "Đang xử lý")
+    {
+        <div class="col-12 text-end">
+            <a href="/Orders/Cancel/@Model.MaDon"
+               onclick="return confirm('Xác nhận hủy đơn hàng này?')"
+               class="btn btn-outline-danger">
+                <i class="bi bi-x-circle me-2"></i>Hủy đơn hàng
+            </a>
+        </div>
+    }
+</div>

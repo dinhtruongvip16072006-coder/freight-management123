@@ -1,0 +1,611 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - VanChuyenPBL3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #4caf50;
+            --primary-pale: #e8f5e9;
+            --primary-dark: #1b5e20;
+            --accent: #ff6f00;
+            --sidebar-w: 250px;
+            --topbar-h: 60px;
+        }
+
+        * {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f1f8f1;
+            margin: 0;
+        }
+
+        /* ── TOPBAR ── */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--topbar-h);
+            z-index: 1000;
+            background: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+            .topbar .brand {
+                color: #fff;
+                font-size: 1.25rem;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                text-decoration: none;
+            }
+
+                .topbar .brand span {
+                    color: #a5d6a7;
+                }
+
+            .topbar .user-info {
+                margin-left: auto;
+                color: #c8e6c9;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-size: .9rem;
+            }
+
+                .topbar .user-info .avatar {
+                    width: 34px;
+                    height: 34px;
+                    border-radius: 50%;
+                    background: var(--primary-light);
+                    color: #fff;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 700;
+                    font-size: .85rem;
+                }
+
+        .logout-btn {
+            color: #ffcdd2;
+            text-decoration: none;
+            font-size: .85rem;
+            border: 1px solid #ef9a9a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            transition: all .2s;
+        }
+
+            .logout-btn:hover {
+                background: #c62828;
+                color: #fff;
+                border-color: #c62828;
+            }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            position: fixed;
+            top: var(--topbar-h);
+            left: 0;
+            bottom: 0;
+            width: var(--sidebar-w);
+            background: #fff;
+            border-right: 1px solid #c8e6c9;
+            overflow-y: auto;
+            z-index: 900;
+            box-shadow: 2px 0 8px rgba(46,125,50,.08);
+        }
+
+            .sidebar .role-badge {
+                padding: 16px 20px 12px;
+                border-bottom: 1px solid #e8f5e9;
+                font-size: .75rem;
+                font-weight: 600;
+                color: #81c784;
+                text-transform: uppercase;
+                letter-spacing: .08em;
+            }
+
+            .sidebar .nav-item {
+                margin: 4px 10px;
+            }
+
+            .sidebar .nav-link {
+                color: #555;
+                border-radius: 10px;
+                padding: 10px 14px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: .9rem;
+                font-weight: 500;
+                transition: all .18s;
+                text-decoration: none;
+            }
+
+                .sidebar .nav-link i {
+                    font-size: 1.1rem;
+                    width: 22px;
+                    text-align: center;
+                }
+
+                .sidebar .nav-link:hover {
+                    background: var(--primary-pale);
+                    color: var(--primary);
+                }
+
+                .sidebar .nav-link.active {
+                    background: var(--primary);
+                    color: #fff;
+                    box-shadow: 0 3px 10px rgba(46,125,50,.3);
+                }
+
+                    .sidebar .nav-link.active i {
+                        color: #a5d6a7;
+                    }
+
+        .sidebar-section {
+            padding: 14px 20px 6px;
+            font-size: .72rem;
+            font-weight: 700;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+        }
+
+        /* ── MAIN CONTENT ── */
+        .main-content {
+            margin-left: var(--sidebar-w);
+            margin-top: var(--topbar-h);
+            padding: 28px;
+            min-height: calc(100vh - var(--topbar-h));
+        }
+
+        /* ── PAGE HEADER ── */
+        .page-header {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+            .page-header h4 {
+                margin: 0;
+                color: var(--primary-dark);
+                font-weight: 700;
+            }
+
+            .page-header small {
+                color: #888;
+                font-size: .82rem;
+            }
+
+        /* ── CARDS ── */
+        .stat-card {
+            border-radius: 14px;
+            padding: 20px 22px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,.1);
+        }
+
+            .stat-card::after {
+                content: '';
+                position: absolute;
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                background: rgba(255,255,255,.1);
+                right: -15px;
+                top: -15px;
+            }
+
+            .stat-card .stat-icon {
+                font-size: 2rem;
+                opacity: .85;
+                margin-bottom: 8px;
+            }
+
+            .stat-card .stat-val {
+                font-size: 2rem;
+                font-weight: 700;
+                line-height: 1;
+            }
+
+            .stat-card .stat-label {
+                font-size: .82rem;
+                opacity: .85;
+                margin-top: 4px;
+            }
+
+        /* ── TABLE ── */
+        .data-table {
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,.05);
+        }
+
+            .data-table table {
+                margin: 0;
+            }
+
+            .data-table thead th {
+                background: var(--primary-pale);
+                color: var(--primary-dark);
+                font-weight: 600;
+                font-size: .85rem;
+                border: none;
+                padding: 14px 16px;
+            }
+
+            .data-table tbody td {
+                padding: 12px 16px;
+                vertical-align: middle;
+                border-color: #f1f8f1;
+                font-size: .88rem;
+            }
+
+            .data-table tbody tr:hover {
+                background: #f9fdf9;
+            }
+
+        /* ── STATUS BADGES ── */
+        .badge-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: .78rem;
+            font-weight: 600;
+        }
+
+        .badge-pending {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .badge-warehouse {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .badge-shipping {
+            background: #f3e5f5;
+            color: #6a1b9a;
+        }
+
+        .badge-delivered {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .badge-cancelled {
+            background: #fce4ec;
+            color: #880e4f;
+        }
+
+        /* ── BUTTONS ── */
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+            .btn-primary:hover {
+                background: var(--primary-dark);
+                border-color: var(--primary-dark);
+            }
+
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+            .btn-outline-primary:hover {
+                background: var(--primary);
+            }
+
+        /* ── FORM CARD ── */
+        .form-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.05);
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: .87rem;
+            color: #444;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            border-color: #ddd;
+            font-size: .9rem;
+        }
+
+            .form-control:focus, .form-select:focus {
+                border-color: var(--primary-light);
+                box-shadow: 0 0 0 3px rgba(76,175,80,.15);
+            }
+
+        .section-title {
+            font-size: .8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            padding: 10px 0 6px;
+            border-bottom: 2px solid var(--primary-pale);
+            margin-bottom: 16px;
+        }
+
+        /* Alert */
+        .alert {
+            border-radius: 10px;
+            font-size: .9rem;
+        }
+
+        /* Timeline tracking */
+        .timeline {
+            padding: 0;
+            list-style: none;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding-bottom: 20px;
+            position: relative;
+        }
+
+            .timeline-item:not(:last-child)::before {
+                content: '';
+                position: absolute;
+                left: 17px;
+                top: 36px;
+                bottom: 0;
+                width: 2px;
+                background: #e8f5e9;
+            }
+
+        .timeline-dot {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: var(--primary-pale);
+            border: 2px solid var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: .95rem;
+        }
+
+            .timeline-dot.active {
+                background: var(--primary);
+                color: #fff;
+                border-color: var(--primary);
+            }
+
+        .timeline-body {
+            padding-top: 6px;
+        }
+
+            .timeline-body strong {
+                font-size: .9rem;
+                color: #333;
+            }
+
+            .timeline-body small {
+                color: #999;
+                display: block;
+                font-size: .78rem;
+            }
+    </style>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <a class="brand" href="#">
+            <i class="bi bi-truck" style="color:#a5d6a7"></i>
+            Vận<span>Chuyển</span>PBL3
+        </a>
+        <div class="user-info">
+            <div class="avatar">@(Context.Session.GetString("HoTen")?.Substring(0, 1).ToUpper() ?? "U")</div>
+            <div>
+                <div style="color:#fff;font-weight:600;font-size:.88rem">@Context.Session.GetString("HoTen")</div>
+                <div style="font-size:.75rem">@Context.Session.GetString("RoleName")</div>
+            </div>
+            <a href="/Account/Logout" class="logout-btn"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+        </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        @{
+            var role = Context.Session.GetString("RoleName");
+            var path = Context.Request.Path.Value ?? "";
+        }
+
+        @if (role == "Admin")
+        {
+            <div class="role-badge"><i class="bi bi-shield-fill"></i> Quản trị viên</div>
+            <div class="sidebar-section">Tổng quan</div>
+            <div class="nav-item">
+                <a href="/Admin/Index" class="nav-link @(path == "/Admin/Index" ? "active" : "")">
+                    <i class="bi bi-grid-1x2"></i> Dashboard
+                </a>
+            </div>
+            <div class="sidebar-section">Quản lý</div>
+            <div class="nav-item">
+                <a href="/Admin/Users" class="nav-link @(path == "/Admin/Users" ? "active" : "")">
+                    <i class="bi bi-people"></i> Tài khoản người dùng
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/Admin/Orders" class="nav-link @(path == "/Admin/Orders" ? "active" : "")">
+                    <i class="bi bi-box-seam"></i> Tất cả đơn hàng
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/Admin/Warehouses" class="nav-link @(path == "/Admin/Warehouses" ? "active" : "")">
+                    <i class="bi bi-building"></i> Kho hàng
+                </a>
+            </div>
+            <div class="sidebar-section">Báo cáo</div>
+            <div class="nav-item">
+                <a href="/Admin/Revenue" class="nav-link @(path == "/Admin/Revenue" ? "active" : "")">
+                    <i class="bi bi-bar-chart-line"></i> Thống kê doanh thu
+                </a>
+            </div>
+        }
+        else if (role == "KhachHang")
+        {
+            <div class="role-badge"><i class="bi bi-person"></i> Khách hàng</div>
+            <div class="sidebar-section">Đơn hàng</div>
+            <div class="nav-item">
+                <a href="/Orders/Create" class="nav-link @(path == "/Orders/Create" ? "active" : "")">
+                    <i class="bi bi-plus-circle"></i> Tạo đơn hàng
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/Orders/Index" class="nav-link @(path == "/Orders/Index" ? "active" : "")">
+                    <i class="bi bi-list-ul"></i> Danh sách đơn hàng
+                </a>
+            </div>
+            <div class="sidebar-section">Tài khoản</div>
+            <div class="nav-item">
+                <a href="/Account/Profile" class="nav-link @(path == "/Account/Profile" ? "active" : "")">
+                    <i class="bi bi-person-circle"></i> Thông tin cá nhân
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/Account/ChangePassword" class="nav-link @(path == "/Account/ChangePassword" ? "active" : "")">
+                    <i class="bi bi-key"></i> Đổi mật khẩu
+                </a>
+            </div>
+        }
+        else if (role == "QuanLyKho")
+        {
+            <div class="role-badge"><i class="bi bi-building"></i> Quản lý kho</div>
+            <div class="sidebar-section">Kho hàng</div>
+            <div class="nav-item">
+                <a href="/Warehouse/Index" class="nav-link @(path == "/Warehouse/Index" ? "active" : "")">
+                    <i class="bi bi-grid-1x2"></i> Dashboard kho
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/Warehouse/Incoming" class="nav-link @(path == "/Warehouse/Incoming" ? "active" : "")">
+                    <i class="bi bi-box-arrow-in-down"></i> Nhận đơn vào kho
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/Warehouse/Assign" class="nav-link @(path == "/Warehouse/Assign" ? "active" : "")">
+                    <i class="bi bi-person-badge"></i> Gán tài xế
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/Warehouse/Stock" class="nav-link @(path == "/Warehouse/Stock" ? "active" : "")">
+                    <i class="bi bi-archive"></i> Hàng trong kho
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/Warehouse/Exported" class="nav-link @(path == "/Warehouse/Exported" ? "active" : "")">
+                    <i class="bi bi-box-arrow-up"></i> Đơn xuất kho
+                </a>
+            </div>
+            <div class="sidebar-section">Tài khoản</div>
+            <div class="nav-item">
+                <a href="/Account/Profile" class="nav-link @(path == "/Account/Profile" ? "active" : "")">
+                    <i class="bi bi-person-circle"></i> Thông tin cá nhân
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/Account/ChangePassword" class="nav-link @(path == "/Account/ChangePassword" ? "active" : "")">
+                    <i class="bi bi-key"></i> Đổi mật khẩu
+                </a>
+            </div>
+        }
+        else if (role == "TaiXe")
+        {
+            <div class="role-badge"><i class="bi bi-truck"></i> Tài xế</div>
+            <div class="sidebar-section">Nhiệm vụ</div>
+            <div class="nav-item">
+                <a href="/Driver/Index" class="nav-link @(path == "/Driver/Index" ? "active" : "")">
+                    <i class="bi bi-grid-1x2"></i> Dashboard
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/Driver/MyOrders" class="nav-link @(path == "/Driver/MyOrders" ? "active" : "")">
+                    <i class="bi bi-list-check"></i> Đơn được giao
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/Driver/Delivering" class="nav-link @(path == "/Driver/Delivering" ? "active" : "")">
+                    <i class="bi bi-truck"></i> Đang giao hàng
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/Driver/Completed" class="nav-link @(path == "/Driver/Completed" ? "active" : "")">
+                    <i class="bi bi-check-circle"></i> Đã hoàn thành
+                </a>
+            </div>
+            <div class="sidebar-section">Tài khoản</div>
+            <div class="nav-item">
+                <a href="/Account/Profile" class="nav-link @(path == "/Account/Profile" ? "active" : "")">
+                    <i class="bi bi-person-circle"></i> Thông tin cá nhân
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/Account/ChangePassword" class="nav-link @(path == "/Account/ChangePassword" ? "active" : "")">
+                    <i class="bi bi-key"></i> Đổi mật khẩu
+                </a>
+            </div>
+        }
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-circle me-2"></i>@TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+        @RenderBody()
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

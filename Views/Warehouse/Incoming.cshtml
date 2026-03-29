@@ -1,0 +1,44 @@
+﻿@* ===== Views/Warehouse/Incoming.cshtml ===== *@
+@model IEnumerable<FreightManagement.Models.DonHang>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Nhận đơn vào kho";
+}
+<div class="page-header">
+    <div><h4><i class="bi bi-box-arrow-in-down me-2"></i>Đơn chờ nhận vào kho</h4><small>Các đơn hàng mới cần tiếp nhận</small></div>
+</div>
+<div class="data-table">
+    <table class="table">
+        <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Hàng hóa</th><th>Địa chỉ gửi</th><th>Địa chỉ nhận</th><th>Chi phí</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr><td colspan="8" class="text-center py-4" style="color:#aaa">Không có đơn nào chờ nhận</td></tr>
+            }
+            @foreach (var d in Model)
+            {
+                <tr>
+                    <td><strong style="color:#2e7d32">#@d.MaDon.ToString("D5")</strong></td>
+                    <td><div style="font-weight:600">@d.KhachHang?.HoTen</div><small style="color:#999">@d.KhachHang?.SoDienThoai</small></td>
+                    <td><small>@(d.MoTaHang ?? "—") (@d.SoLuong kiện)</small></td>
+                    <td><small>@d.DiaChiGui</small></td>
+                    <td><small>@d.DiaChiNhan</small></td>
+                    <td><strong>@d.ChiPhi.ToString("N0") ₫</strong></td>
+                    <td><small style="color:#999">@d.NgayTao.ToString("dd/MM/yy HH:mm")</small></td>
+                    <td>
+                        <form method="post" action="/Warehouse/NhanVaoKho" style="display:inline">
+                            <input type="hidden" name="maDon" value="@d.MaDon" />
+                            <select name="maKho" class="form-select form-select-sm d-inline-block w-auto me-1">
+                                @foreach (var kho in ViewBag.Khos as List<FreightManagement.Models.KhoHang> ?? new())
+                                {
+                                    <option value="@kho.MaKho">@kho.TenKho</option>
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check me-1"></i>Nhận vào kho</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

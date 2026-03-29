@@ -1,0 +1,55 @@
+﻿@* ===== Views/Admin/Users.cshtml ===== *@
+@model IEnumerable<FreightManagement.Models.User>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Quản lý tài khoản";
+}
+<div class="page-header">
+    <div><h4><i class="bi bi-people me-2"></i>Quản lý tài khoản người dùng</h4><small>Tổng: @Model.Count() tài khoản</small></div>
+</div>
+<div class="data-table">
+    <table class="table">
+        <thead><tr><th>ID</th><th>Họ tên</th><th>Email</th><th>SĐT</th><th>Địa chỉ</th><th>Vai trò</th><th>Ngày tạo</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+        <tbody>
+            @foreach (var u in Model)
+            {
+                <tr>
+                    <td><small style="color:#999">#@u.UserId</small></td>
+                    <td><strong>@u.HoTen</strong></td>
+                    <td><small>@u.Email</small></td>
+                    <td><small>@(u.SoDienThoai ?? "—")</small></td>
+                    <td><small>@(u.DiaChi ?? "—")</small></td>
+                    <td>
+                        @{
+                            var roleColor = u.Role?.RoleName switch
+                            {
+                                "Admin" => "#d32f2f",
+                                "KhachHang" => "#1565c0",
+                                "QuanLyKho" => "#e65100",
+                                "TaiXe" => "#2e7d32",
+                                _ => "#777"
+                            };
+                        }
+                        <span style="background:@(roleColor)22;color:@roleColor;padding:3px 10px;border-radius:12px;font-size:.78rem;font-weight:600">@u.Role?.RoleName</span>
+                    </td>
+                    <td><small style="color:#999">@u.NgayTao.ToString("dd/MM/yyyy")</small></td>
+                    <td>
+                        <span style="background:@(u.TrangThai == "HoatDong" ? "#e8f5e9" : "#fce4ec");color:@(u.TrangThai == "HoatDong" ? "#2e7d32" : "#880e4f");padding:3px 10px;border-radius:12px;font-size:.78rem;font-weight:600">
+                            @(u.TrangThai == "HoatDong" ? "Hoạt động" : "Bị khóa")
+                        </span>
+                    </td>
+                    <td>
+                        @if (u.RoleId != 1)
+                        {
+                            <a href="/Admin/ToggleUser/@u.UserId"
+                               onclick="return confirm('Xác nhận @(u.TrangThai == "HoatDong" ? "khóa" : "mở khóa") tài khoản này?')"
+                               class="btn btn-sm @(u.TrangThai == "HoatDong" ? "btn-outline-danger" : "btn-outline-success")">
+                                <i class="bi @(u.TrangThai == "HoatDong" ? "bi-lock" : "bi-unlock")"></i>
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

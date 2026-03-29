@@ -1,0 +1,182 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Dashboard Admin";
+}
+
+<div class="page-header">
+    <div>
+        <h4><i class="bi bi-grid-1x2 me-2"></i>Dashboard Quản trị</h4>
+        <small>Xin chào, <strong>@Context.Session.GetString("HoTen")</strong> — Tổng quan hệ thống</small>
+    </div>
+    <span style="background:#e8f5e9;color:#2e7d32;padding:6px 16px;border-radius:20px;font-size:.82rem;font-weight:600">
+        <i class="bi bi-circle-fill me-1" style="font-size:.5rem;color:#4caf50"></i> Hệ thống đang hoạt động
+    </span>
+</div>
+
+<!-- HÀNG 1: Thống kê đơn hàng -->
+<div class="row g-3 mb-3">
+    <div class="col-md-3">
+        <div class="stat-card" style="background:linear-gradient(135deg,#1565c0,#1976d2)">
+            <div class="stat-icon"><i class="bi bi-box-seam"></i></div>
+            <div class="stat-val">@ViewBag.TongDonHang</div>
+            <div class="stat-label">Tổng đơn hàng</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background:linear-gradient(135deg,#e65100,#ff6f00)">
+            <div class="stat-icon"><i class="bi bi-clock"></i></div>
+            <div class="stat-val">@ViewBag.DangXuLy</div>
+            <div class="stat-label">Đang xử lý</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background:linear-gradient(135deg,#6a1b9a,#8e24aa)">
+            <div class="stat-icon"><i class="bi bi-truck"></i></div>
+            <div class="stat-val">@ViewBag.DangVanChuyen</div>
+            <div class="stat-label">Đang vận chuyển</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background:linear-gradient(135deg,#2e7d32,#43a047)">
+            <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
+            <div class="stat-val">@ViewBag.DaGiao</div>
+            <div class="stat-label">Đã giao thành công</div>
+        </div>
+    </div>
+</div>
+
+<!-- HÀNG 2: Thống kê hệ thống -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card" style="background:linear-gradient(135deg,#00695c,#00897b)">
+            <div class="stat-icon"><i class="bi bi-people"></i></div>
+            <div class="stat-val">@ViewBag.TongKhachHang</div>
+            <div class="stat-label">Khách hàng</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background:linear-gradient(135deg,#1b5e20,#2e7d32)">
+            <div class="stat-icon"><i class="bi bi-person-badge"></i></div>
+            <div class="stat-val">@ViewBag.TongTaiXe</div>
+            <div class="stat-label">Tài xế</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background:linear-gradient(135deg,#37474f,#455a64)">
+            <div class="stat-icon"><i class="bi bi-building"></i></div>
+            <div class="stat-val">@ViewBag.TongKho</div>
+            <div class="stat-label">Kho hàng</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background:linear-gradient(135deg,#f57f17,#fbc02d)">
+            <div class="stat-icon"><i class="bi bi-currency-dollar"></i></div>
+            <div class="stat-val" style="font-size:1.3rem">@String.Format("{0:N0}", ViewBag.DoanhThu)</div>
+            <div class="stat-label">Doanh thu (VNĐ)</div>
+        </div>
+    </div>
+</div>
+
+<!-- HÀNG 3: Menu điều hướng nhanh -->
+<div class="row g-3">
+    <div class="col-12">
+        <div class="form-card">
+            <div class="section-title"><i class="bi bi-lightning me-2"></i>Truy cập nhanh</div>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <a href="/Admin/Users" class="text-decoration-none">
+                        <div style="border:2px solid #e8f5e9;border-radius:12px;padding:18px;text-align:center;transition:all .2s;cursor:pointer" onmouseover="this.style.borderColor='#4caf50';this.style.background='#f9fdf9'" onmouseout="this.style.borderColor='#e8f5e9';this.style.background='#fff'">
+                            <div style="font-size:2rem;margin-bottom:8px">👥</div>
+                            <div style="font-weight:700;color:#333;font-size:.92rem">Quản lý tài khoản</div>
+                            <div style="font-size:.78rem;color:#999;margin-top:3px">Xem, khóa/mở tài khoản</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="/Admin/Orders" class="text-decoration-none">
+                        <div style="border:2px solid #e8f5e9;border-radius:12px;padding:18px;text-align:center;transition:all .2s" onmouseover="this.style.borderColor='#4caf50';this.style.background='#f9fdf9'" onmouseout="this.style.borderColor='#e8f5e9';this.style.background='#fff'">
+                            <div style="font-size:2rem;margin-bottom:8px">📦</div>
+                            <div style="font-weight:700;color:#333;font-size:.92rem">Tất cả đơn hàng</div>
+                            <div style="font-size:.78rem;color:#999;margin-top:3px">Xem toàn bộ hệ thống</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="/Admin/Warehouses" class="text-decoration-none">
+                        <div style="border:2px solid #e8f5e9;border-radius:12px;padding:18px;text-align:center;transition:all .2s" onmouseover="this.style.borderColor='#4caf50';this.style.background='#f9fdf9'" onmouseout="this.style.borderColor='#e8f5e9';this.style.background='#fff'">
+                            <div style="font-size:2rem;margin-bottom:8px">🏭</div>
+                            <div style="font-weight:700;color:#333;font-size:.92rem">Kho hàng</div>
+                            <div style="font-size:.78rem;color:#999;margin-top:3px">Trạng thái các kho</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="/Admin/Revenue" class="text-decoration-none">
+                        <div style="border:2px solid #e8f5e9;border-radius:12px;padding:18px;text-align:center;transition:all .2s" onmouseover="this.style.borderColor='#4caf50';this.style.background='#f9fdf9'" onmouseout="this.style.borderColor='#e8f5e9';this.style.background='#fff'">
+                            <div style="font-size:2rem;margin-bottom:8px">📊</div>
+                            <div style="font-weight:700;color:#333;font-size:.92rem">Thống kê doanh thu</div>
+                            <div style="font-size:.78rem;color:#999;margin-top:3px">Báo cáo chi tiết</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- HÀNG 4: Đơn hàng gần đây -->
+<div class="row g-3 mt-1">
+    <div class="col-12">
+        <div class="data-table">
+            <div style="padding:16px 20px;border-bottom:1px solid #f1f8f1;display:flex;justify-content:space-between;align-items:center">
+                <span style="font-weight:700;color:#1b5e20;font-size:.95rem"><i class="bi bi-clock-history me-2"></i>Đơn hàng gần đây</span>
+                <a href="/Admin/Orders" style="color:#4caf50;font-size:.82rem;text-decoration:none">Xem tất cả →</a>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Khách hàng</th>
+                        <th>Người nhận</th>
+                        <th>Chi phí</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày tạo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.RecentOrders != null)
+                    {
+                        foreach (var d in ViewBag.RecentOrders as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>())
+                        {
+                            <tr>
+                                <td><strong style="color:#2e7d32">#@d.MaDon.ToString("D5")</strong></td>
+                                <td>@d.KhachHang?.HoTen</td>
+                                <td>@d.TenNguoiNhan</td>
+                                <td><strong>@d.ChiPhi.ToString("N0") ₫</strong></td>
+                                <td>
+                                    @{
+                                        var cls = ((string)d.TrangThai) switch
+                                        {
+                                            "Đang xử lý" => "badge-pending",
+                                            "Đã vào kho" => "badge-warehouse",
+                                            "Đang vận chuyển" => "badge-shipping",
+                                            "Đã giao" => "badge-delivered",
+                                            "Đã hủy" => "badge-cancelled",
+                                            _ => "badge-pending"
+                                        };
+                                    }
+                                    <span class="badge-status @cls">@d.TrangThai</span>
+                                </td>
+                                <td><small style="color:#999">@d.NgayTao.ToString("dd/MM/yyyy HH:mm")</small></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="6" class="text-center py-4" style="color:#aaa">Chưa có đơn hàng nào</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

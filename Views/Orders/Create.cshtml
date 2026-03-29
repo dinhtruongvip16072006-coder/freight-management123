@@ -1,0 +1,138 @@
+﻿@* ===== Views/Orders/Create.cshtml ===== *@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Tạo đơn hàng";
+}
+
+<div class="page-header">
+    <div>
+        <h4><i class="bi bi-plus-circle me-2"></i>Tạo đơn hàng mới</h4>
+        <small>Điền thông tin người nhận và hàng hóa cần gửi</small>
+    </div>
+    <a href="/Orders/Index" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-list me-1"></i>Danh sách đơn
+    </a>
+</div>
+
+<form method="post" action="/Orders/Create">
+    <div class="row g-4">
+
+        <!-- THÔNG TIN NGƯỜI GỬI — Hiển thị từ tài khoản -->
+        <div class="col-12">
+            <div class="form-card" style="border-left:4px solid #ff6f00">
+                <div class="section-title">
+                    <i class="bi bi-circle-fill me-2" style="color:#ff6f00;font-size:.6rem"></i>
+                    Thông tin người gửi
+                    <span style="font-size:.75rem;color:#aaa;font-weight:400;margin-left:8px"></span>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Họ tên</label>
+                        <div style="background:#f9fdf9;border:1px solid #e8f5e9;border-radius:8px;padding:10px 14px;font-weight:600">
+                            <i class="bi bi-person me-2" style="color:#4caf50"></i>@ViewBag.HoTen
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Số điện thoại</label>
+                        <div style="background:#f9fdf9;border:1px solid #e8f5e9;border-radius:8px;padding:10px 14px">
+                            <i class="bi bi-telephone me-2" style="color:#4caf50"></i>
+                            @(string.IsNullOrEmpty(ViewBag.SoDienThoai as string) ? "Chưa cập nhật" : ViewBag.SoDienThoai)
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Địa chỉ gửi</label>
+                        <div style="background:#f9fdf9;border:1px solid #e8f5e9;border-radius:8px;padding:10px 14px">
+                            <i class="bi bi-geo-alt me-2" style="color:#4caf50"></i>
+                            @(string.IsNullOrEmpty(ViewBag.DiaChi as string) ? "Chưa cập nhật" : ViewBag.DiaChi)
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:10px;font-size:.8rem;color:#aaa">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Muốn thay đổi? <a href="/Account/Profile" style="color:#2e7d32">Cập nhật thông tin cá nhân</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- THÔNG TIN NGƯỜI NHẬN -->
+        <div class="col-12">
+            <div class="form-card" style="border-left:4px solid #2e7d32">
+                <div class="section-title">
+                    <i class="bi bi-circle-fill me-2" style="color:#2e7d32;font-size:.6rem"></i>Thông tin người nhận
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Họ tên người nhận <span class="text-danger">*</span></label>
+                        <input type="text" name="TenNguoiNhan" class="form-control" placeholder="Nguyễn Thị B" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Số điện thoại người nhận <span class="text-danger">*</span></label>
+                        <input type="text" name="SdtNguoiNhan" class="form-control" placeholder="0987654321" required />
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label">Tỉnh/Thành phố nhận <span class="text-danger">*</span></label>
+                        <select name="TinhNhan" class="form-select" required>
+                            <option value="">-- Chọn tỉnh thành --</option>
+                            @foreach (var t in ViewBag.Provinces as List<string> ?? new List<string>())
+                            {
+                                <option value="@t">@t</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-7">
+                        <label class="form-label">Địa chỉ cụ thể <span class="text-danger">*</span></label>
+                        <input type="text" name="DiaChiNhan" class="form-control" placeholder="Số nhà, đường, phường/xã, quận/huyện" required />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- THÔNG TIN HÀNG HÓA -->
+        <div class="col-12">
+            <div class="form-card">
+                <div class="section-title"><i class="bi bi-box me-2"></i>Thông tin hàng hóa</div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Mô tả hàng hóa</label>
+                        <input type="text" name="MoTaHang" class="form-control" placeholder="VD: Quần áo, điện tử, tài liệu..." />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Số lượng (kiện)</label>
+                        <input type="number" name="SoLuong" class="form-control" value="1" min="1" id="soLuong" oninput="tinhChiPhi()" required />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Đơn giá (VNĐ/kiện)</label>
+                        <input type="number" name="DonGia" class="form-control" value="25000" min="1000" id="donGia" oninput="tinhChiPhi()" required />
+                    </div>
+                    <div class="col-12">
+                        <div style="background:#e8f5e9;border-radius:12px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between">
+                            <span style="color:#388e3c;font-weight:600"><i class="bi bi-calculator me-2"></i>Phí vận chuyển dự tính:</span>
+                            <span style="font-size:1.4rem;font-weight:800;color:#1b5e20" id="chiPhiHienThi">25.000 VNĐ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="col-12 text-end">
+            <a href="/Orders/Index" class="btn btn-outline-secondary me-2">
+                <i class="bi bi-x me-1"></i>Hủy
+            </a>
+            <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-send me-2"></i>Đặt đơn hàng
+            </button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function tinhChiPhi() {
+            const sl = parseInt(document.getElementById('soLuong').value) || 0;
+            const dg = parseInt(document.getElementById('donGia').value) || 0;
+            const cp = sl * dg;
+            document.getElementById('chiPhiHienThi').textContent = cp.toLocaleString('vi-VN') + ' VNĐ';
+        }
+    </script>
+}
