@@ -15,3 +15,4 @@
             => GetRole(accessor) == role;
     }
 }
+//

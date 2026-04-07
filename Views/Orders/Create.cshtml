@@ -88,7 +88,7 @@
         </div>
 
         <!-- THÔNG TIN HÀNG HÓA -->
-        <div class="col-12">
+         @* <div class="col-12">
             <div class="form-card">
                 <div class="section-title"><i class="bi bi-box me-2"></i>Thông tin hàng hóa</div>
                 <div class="row g-3">
@@ -110,6 +110,78 @@
                             <span style="font-size:1.4rem;font-weight:800;color:#1b5e20" id="chiPhiHienThi">25.000 VNĐ</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div> *@
+
+        <div class="col-12">
+            <div class="form-card">
+                <div class="section-title">
+                    <i class="bi bi-box me-2"></i>Thông tin hàng hóa
+                </div>
+
+                <div class="row g-3">
+
+                    <!-- ✅ THÊM Ở ĐÂY -->
+                    <div class="col-12">
+                        <label class="form-label">Loại hàng <span class="text-danger">*</span></label>
+                        <div class="d-flex gap-3">
+
+                            @* <input type="radio" name="LoaiHang" value="HangHoa" id="hanghoa" checked hidden>
+                            <label for="hanghoa" class="btn btn-outline-warning">📦 Hàng hóa</label>
+
+                            <input type="radio" name="LoaiHang" value="ThuTu" id="thutu" hidden>
+                            <label for="thutu" class="btn btn-outline-primary">✉️ Thư từ</label>
+
+                            <input type="radio" name="LoaiHang" value="Fresh" id="fresh" hidden>
+                            <label for="fresh" class="btn btn-outline-success">🌱 Fresh</label> *@
+                            <input type="radio" name="LoaiHang" value="HangHoa" id="hanghoa" checked hidden onchange="doiLoaiHang()">
+                            <label for="hanghoa" class="btn btn-outline-warning">📦 Hàng hóa</label>
+
+                            <input type="radio" name="LoaiHang" value="ThuTu" id="thutu" hidden onchange="doiLoaiHang()">
+                            <label for="thutu" class="btn btn-outline-primary">✉️ Thư từ</label>
+
+                            <input type="radio" name="LoaiHang" value="Fresh" id="fresh" hidden onchange="doiLoaiHang()">
+                            <label for="fresh" class="btn btn-outline-success">🌱 Fresh</label>
+
+                        </div>
+                    </div>
+
+                    <!-- Mô tả -->
+                    <div class="col-md-6">
+                        <label class="form-label">Mô tả hàng hóa</label>
+                        <input type="text" name="MoTaHang" class="form-control"
+                               placeholder="VD: Quần áo, điện tử, tài liệu..." />
+                    </div>
+
+                    <!-- Số lượng -->
+                    <div class="col-md-3">
+                        <label class="form-label" id="labelSoLuong">Số lượng (kiện)</label>
+                        <input type="number" name="SoLuong" class="form-control"
+                               value="1" min="1" id="soLuong"
+                               oninput="tinhChiPhi()" required />
+                    </div>
+
+                    <!-- Đơn giá -->
+                    <div class="col-md-3">
+                        <label class="form-label" id="labelDonGia">Đơn giá (VNĐ/kiện)</label>
+                        <input type="number" class="form-control"
+                               value="25000" id="donGia"
+                               readonly />
+                    </div>
+
+                    <!-- Phí -->
+                    <div class="col-12">
+                        <div style="background:#e8f5e9;border-radius:12px;padding:16px 20px;
+                            display:flex;align-items:center;justify-content:space-between">
+                            <span style="color:#388e3c;font-weight:600">
+                                <i class="bi bi-calculator me-2"></i>Phí vận chuyển dự tính:
+                            </span>
+                            <span style="font-size:1.4rem;font-weight:800;color:#1b5e20"
+                                  id="chiPhiHienThi">25.000 VNĐ</span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -134,5 +206,33 @@
             const cp = sl * dg;
             document.getElementById('chiPhiHienThi').textContent = cp.toLocaleString('vi-VN') + ' VNĐ';
         }
+        function doiLoaiHang() {
+            const loai = document.querySelector('input[name="LoaiHang"]:checked').value;
+
+            const labelSL = document.getElementById('labelSoLuong');
+            const labelDG = document.getElementById('labelDonGia');
+            const donGia = document.getElementById('donGia');
+
+            if (loai === "HangHoa") {
+                labelSL.textContent = "Khối lượng (kg)";
+                labelDG.textContent = "Đơn giá (VNĐ/kg)";
+                donGia.value = 25000;
+            }
+            else if (loai === "ThuTu") {
+                labelSL.textContent = "Số lượng (kiện)";
+                labelDG.textContent = "Đơn giá (VNĐ/kiện)";
+                donGia.value = 20000;
+            }
+            else if (loai === "Fresh") {
+                labelSL.textContent = "Số lượng (kiện)";
+                labelDG.textContent = "Đơn giá (VNĐ/kiện)";
+                donGia.value = 30000;
+            }
+
+            tinhChiPhi(); // cập nhật lại phí
+        }
+        window.onload = function() {
+            doiLoaiHang();
+        };
     </script>
 }

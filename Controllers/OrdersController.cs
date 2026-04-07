@@ -50,28 +50,34 @@ namespace FreightManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(
-            string TenNguoiNhan, string SdtNguoiNhan,
+        public async Task<IActionResult> Create (string TenNguoiNhan, string SdtNguoiNhan,
             string TinhNhan, string DiaChiNhan,
-            string? MoTaHang, int SoLuong, int DonGia)
+            string? MoTaHang, int SoLuong, string LoaiHang)
         {
             var userId = HttpContext.Session.GetInt32("UserId")!.Value;
             var user = await _db.Users.FindAsync(userId);
+            int donGia = 0;
+            if (LoaiHang == "HangHoa")
+                donGia = 25000;
+            else if (LoaiHang == "ThuTu")
+                donGia = 20000;
+            else
+                donGia = 30000;
+
             var order = new DonHang
             {
-                MaKH = userId,
-                DiaChiGui = user?.DiaChi ?? "Chưa cập nhật",
-                TenNguoiNhan = TenNguoiNhan,
-                SdtNguoiNhan = SdtNguoiNhan,
-                DiaChiNhan = $"{DiaChiNhan}, {TinhNhan}",
-                MoTaHang = MoTaHang,
-                SoLuong = SoLuong,
-                DonGia = DonGia,
-                TrangThai = "Đang xử lý"
+                    MaKH = userId,
+                    DiaChiGui = user?.DiaChi ?? "Chưa cập nhật",
+                    TenNguoiNhan = TenNguoiNhan,
+                    SdtNguoiNhan = SdtNguoiNhan,
+                    DiaChiNhan = $"{DiaChiNhan}, {TinhNhan}",
+                    MoTaHang = MoTaHang,
+                    SoLuong = SoLuong,
+                    DonGia = donGia,
+                    TrangThai = "Đang xử lý"
             };
             _db.DonHangs.Add(order);
             await _db.SaveChangesAsync();
-
             // Ghi lịch sử
             _db.LichSuTrangThais.Add(new LichSuTrangThai
             {
