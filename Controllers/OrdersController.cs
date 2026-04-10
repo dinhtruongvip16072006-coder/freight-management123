@@ -78,7 +78,7 @@ namespace FreightManagement.Controllers
             };
             _db.DonHangs.Add(order);
             await _db.SaveChangesAsync();
-            // Ghi lịch sử
+            //Ghi lịch sử
             _db.LichSuTrangThais.Add(new LichSuTrangThai
             {
                 MaDon = order.MaDon,
@@ -123,7 +123,7 @@ namespace FreightManagement.Controllers
             });
             await _db.SaveChangesAsync();
             TempData["Success"] = "Đã hủy đơn hàng thành công.";
-            return RedirectToAction("Index");
+            return RedirectToAction();
         }
     }
 }

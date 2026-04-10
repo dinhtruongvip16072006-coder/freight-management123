@@ -54,6 +54,48 @@
             </div>
         </div>
 
+        <!-- Chọn kho hàng -->
+        <div class="col-12">
+            <div class="form-card" style="border-left:4px solid #0d6efd">
+                <div class="section-title">
+                    <i class="bi bi-geo me-2" style="color:#0d6efd"></i>Chọn trạm gửi hàng gần bạn nhất <span class="text-danger">*</span>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div class="d-flex flex-wrap gap-3">
+                            <input type="radio" name="MaKhoGui" value="1" id="khoHN" hidden required>
+                            <label for="khoHN" class="warehouse-option">
+                                <div class="info">
+                                    <span class="name">📦 Kho Hà Nội</span>
+                                    <span class="addr">123 Đường Láng, Đống Đa</span>
+                                </div>
+                                <i class="bi bi-check-circle-fill"></i>
+                            </label>
+
+                            <input type="radio" name="MaKhoGui" value="2" id="khoDN" hidden>
+                            <label for="khoDN" class="warehouse-option">
+                                <div class="info">
+                                    <span class="name">📦 Kho Đà Nẵng</span>
+                                    <span class="addr">45 Nguyễn Văn Linh, Hải Châu</span>
+                                </div>
+                                <i class="bi bi-check-circle-fill"></i>
+                            </label>
+
+                            <input type="radio" name="MaKhoGui" value="3" id="khoHCM" hidden>
+                            <label for="khoHCM" class="warehouse-option">
+                                <div class="info">
+                                    <span class="name">📦 Kho TP.HCM</span>
+                                    <span class="addr">78 Quốc Lộ 1A, Quận 12</span>
+                                </div>
+                                <i class="bi bi-check-circle-fill"></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- THÔNG TIN NGƯỜI NHẬN -->
         <div class="col-12">
             <div class="form-card" style="border-left:4px solid #2e7d32">
@@ -235,4 +277,55 @@
             doiLoaiHang();
         };
     </script>
+    <style>
+        /* Style cho các nút chọn kho */
+        .warehouse-option {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+            background: #fff;
+        }
+
+            .warehouse-option .name {
+                display: block;
+                font-weight: 700;
+                color: #333;
+                margin-bottom: 4px;
+            }
+
+            .warehouse-option .addr {
+                display: block;
+                font-size: 0.85rem;
+                color: #6c757d;
+            }
+
+            .warehouse-option i {
+                font-size: 1.5rem;
+                color: #e9ecef;
+                transition: color 0.2s;
+            }
+
+        /* Hiệu ứng khi được chọn */
+        input[name="MaKhoGui"]:checked + .warehouse-option {
+            border-color: #0d6efd;
+            background-color: #f0f7ff;
+        }
+
+            input[name="MaKhoGui"]:checked + .warehouse-option i {
+                color: #0d6efd;
+            }
+
+        .warehouse-option:hover {
+            border-color: #0d6efd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+    </style>
 }
