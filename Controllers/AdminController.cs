@@ -79,11 +79,33 @@ namespace FreightManagement.Controllers
         }
 
         // ── KHO HÀNG ──────────────────────────────────────────────
+        //public async Task<IActionResult> Warehouses()
+        //{
+        //    //var khos = await _db.KhoHangs
+        //    //    .Include(k => k.QuanLyKho)
+        //    //    .ToListAsync();
+        //    var khos = await _db.QLK_KhoHangs.Include(d => d.KhoHang).Include(d => d.QuanLyKho).ToListAsync();
+        //    return View(khos);
+        //}
+
         public async Task<IActionResult> Warehouses()
         {
-            var khos = await _db.KhoHangs
-                .Include(k => k.QuanLyKho)
+            var khos = await _db.QLK_KhoHangs
+                .Include(q => q.KhoHang)
+                .Include(q => q.QuanLyKho)
+                .Select(q => new KhoHang
+                {
+                    MaKho = q.KhoHang!.MaKho,
+                    TenKho = q.KhoHang.TenKho,
+                    DiaChiKho = q.KhoHang.DiaChiKho,
+                    SucChua = q.KhoHang.SucChua,
+                    SoLuongHienTai = q.KhoHang.SoLuongHienTai,
+
+                    // gán 1 quản lý (mỗi kho 1 dòng vì UNIQUE)
+                    QuanLyKho = q.QuanLyKho
+                })
                 .ToListAsync();
+
             return View(khos);
         }
 

@@ -10,6 +10,7 @@ namespace FreightManagement.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<KhoHang> KhoHangs { get; set; }
+        public DbSet<QLK_KhoHang> QLK_KhoHangs { get; set; }
         public DbSet<DonHang> DonHangs { get; set; }
         public DbSet<LichSuTrangThai> LichSuTrangThais { get; set; }
         public DbSet<HangTrongKho> HangTrongKhos { get; set; }
@@ -22,6 +23,7 @@ namespace FreightManagement.Data
             modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<KhoHang>().ToTable("KhoHang");
+            modelBuilder.Entity<QLK_KhoHang>().ToTable("QLK_KhoHang");
             modelBuilder.Entity<DonHang>().ToTable("DonHang");
             modelBuilder.Entity<LichSuTrangThai>().ToTable("LichSuTrangThai");
             modelBuilder.Entity<HangTrongKho>().ToTable("HangTrongKho");
@@ -58,9 +60,25 @@ namespace FreightManagement.Data
                 .HasForeignKey(h => h.MaKho).OnDelete(DeleteBehavior.Restrict);
 
             // KhoHang relationships
-            modelBuilder.Entity<KhoHang>()
-                .HasOne(k => k.QuanLyKho).WithMany()
-                .HasForeignKey(k => k.MaQLK).OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<KhoHang>()
+            //    .HasOne(k => k.QuanLyKho).WithMany()
+            //    .HasForeignKey(k => k.MaQLK).OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<QLK_KhoHang>()
+            //      .HasOne(q => q.KhoHang)
+            //      .WithOne(k => k.QLK_KhoHang)
+            //      .HasForeignKey<QLK_KhoHang>(q => q.MaKho)
+            //      .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<QLK_KhoHang>()
+                    .HasOne(q => q.QuanLyKho)
+                    .WithMany()
+                    .HasForeignKey(q => q.MaQLK)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<QLK_KhoHang>()
+                .HasOne(q => q.QuanLyKho)
+                .WithOne(u => u.QLK_KhoHang)
+                .HasForeignKey<QLK_KhoHang>(q => q.MaQLK)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // LichSuTrangThai relationships
             modelBuilder.Entity<LichSuTrangThai>()

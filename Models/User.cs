@@ -35,6 +35,8 @@ namespace FreightManagement.Models
         public int RoleId { get; set; }
 
         // Navigation
+
+        public QLK_KhoHang? QLK_KhoHang { get; set; }
         public Role Role { get; set; } = null!;
         public ICollection<DonHang> DonHangKhachHang { get; set; } = new List<DonHang>();
         public ICollection<DonHang> DonHangTaiXe { get; set; } = new List<DonHang>();

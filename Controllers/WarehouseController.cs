@@ -22,13 +22,32 @@ namespace FreightManagement.Controllers
             return View();
         }
 
+        //public async Task<IActionResult> Incoming()
+        //{
+        //    var uid = HttpContext.Session.GetInt32("UserId")!.Value;
+        //    var orders = await _db.DonHangs.Include(d => d.KhachHang)
+        //        .Where(d => d.TrangThai == "Đang xử lý")
+        //        .OrderBy(d => d.NgayTao).ToListAsync();
+        //    ViewBag.Khos = await _db.KhoHangs.Where(k => k.MaQLK == uid).ToListAsync();
+        //    return View(orders);
+        //}
+
         public async Task<IActionResult> Incoming()
         {
             var uid = HttpContext.Session.GetInt32("UserId")!.Value;
-            var orders = await _db.DonHangs.Include(d => d.KhachHang)
+
+            var orders = await _db.DonHangs
+                .Include(d => d.KhachHang)
                 .Where(d => d.TrangThai == "Đang xử lý")
-                .OrderBy(d => d.NgayTao).ToListAsync();
-            ViewBag.Khos = await _db.KhoHangs.Where(k => k.MaQLK == uid).ToListAsync();
+                .OrderBy(d => d.NgayTao)
+                .ToListAsync();
+
+            ViewBag.Khos = await _db.QLK_KhoHangs
+                .Include(q => q.KhoHang)
+                .Where(q => q.MaQLK == uid)
+                .Select(q => q.KhoHang)
+                .ToListAsync();
+
             return View(orders);
         }
 

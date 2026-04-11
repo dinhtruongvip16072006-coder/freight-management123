@@ -20,10 +20,11 @@ namespace FreightManagement.Models
         public int SoLuongHienTai { get; set; } = 0;
 
         // FK - Quản lý kho phụ trách
-        public int? MaQLK { get; set; }
+        //public int? MaQLK { get; set; }
 
         // Navigation
         public User? QuanLyKho { get; set; }
+        public QLK_KhoHang? QLK_KhoHang { get; set; }
         public ICollection<HangTrongKho> HangTrongKhos { get; set; } = new List<HangTrongKho>();
     }
 }
